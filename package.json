@@ -54,5 +54,9 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^3.0.0",
     "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "@react-native-community/geolocation": "^3.0.6",
+    "react-native-geolocation": "^1.0.0"
   }
 }
