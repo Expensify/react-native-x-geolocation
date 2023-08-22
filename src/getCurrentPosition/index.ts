@@ -1,1 +1,1 @@
-export { getCurrentPosition } from './getCurrentPosition';
+export {getCurrentPosition} from './getCurrentPosition';
