@@ -1,1 +1,3 @@
-export {getCurrentPosition} from './getCurrentPosition';
+import getCurrentPosition from './getCurrentPosition';
+
+export default getCurrentPosition;

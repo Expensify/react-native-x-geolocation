@@ -6,6 +6,8 @@ Geolocation.setRNConfiguration({
     locationProvider: 'auto',
 });
 
-export const getCurrentPosition = (success: (response: GeolocationResponse) => void, error: (error: GeolocationError) => void, config: GeolocationOptions) => {
+const getCurrentPosition = (success: (response: GeolocationResponse) => void, error: (error: GeolocationError) => void, config: GeolocationOptions) => {
     Geolocation.getCurrentPosition(success, error, config);
 };
+
+export default getCurrentPosition;

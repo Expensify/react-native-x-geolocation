@@ -1,14 +1,15 @@
-type getCurrentPositionOptions = {
+type GetCurrentPositionOptions = {
     maximumAge: number;
     timeout: number;
     enableHighAccuracy: boolean;
 };
 
-export const getCurrentPosition = (success: (pos: GeolocationPosition) => void, error: (err: GeolocationPositionError) => void, options: getCurrentPositionOptions) => {
+const getCurrentPosition = (success: (pos: GeolocationPosition) => void, error: (err: GeolocationPositionError) => void, options: GetCurrentPositionOptions) => {
     if (!('geolocation' in navigator)) {
-        console.error('Geolocation is not supported by this browser.');
         return;
     }
 
     navigator.geolocation.getCurrentPosition(success, error, options);
 };
+
+export default getCurrentPosition;
