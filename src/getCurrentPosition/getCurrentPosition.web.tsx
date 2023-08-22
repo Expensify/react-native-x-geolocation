@@ -4,7 +4,7 @@ type GetCurrentPositionOptions = {
     enableHighAccuracy: boolean;
 };
 
-const getCurrentPosition = (success: (pos: GeolocationPosition) => void, error: (err: GeolocationPositionError) => void, options: GetCurrentPositionOptions) => {
+const getCurrentPosition = (success: (response: GeolocationPosition) => void, error: (error: GeolocationPositionError) => void, options: GetCurrentPositionOptions) => {
     if (!('geolocation' in navigator)) {
         return;
     }
