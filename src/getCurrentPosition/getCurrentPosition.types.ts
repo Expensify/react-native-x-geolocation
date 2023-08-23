@@ -31,4 +31,4 @@ export type GeolocationOptions = {
     fastestInterval?: number;
 };
 
-export type GetCurrentPosition = (success: GeolocationSuccessCallback, error: GeolocationErrorCallback, options: GeolocationOptions) => void;
+export type GetCurrentPosition = (success: GeolocationSuccessCallback, error: GeolocationErrorCallback, options?: GeolocationOptions) => void;
