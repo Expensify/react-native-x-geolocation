@@ -1,4 +1,5 @@
-import Geolocation, {GeolocationError, GeolocationOptions, GeolocationResponse} from '@react-native-community/geolocation';
+import Geolocation from '@react-native-community/geolocation';
+import {GetCurrentPosition} from './getCurrentPosition.types';
 
 Geolocation.setRNConfiguration({
     skipPermissionRequests: false,
@@ -6,7 +7,7 @@ Geolocation.setRNConfiguration({
     locationProvider: 'auto',
 });
 
-const getCurrentPosition = (success: (response: GeolocationResponse) => void, error: (error: GeolocationError) => void, config: GeolocationOptions) => {
+const getCurrentPosition: GetCurrentPosition = (success, error, config) => {
     Geolocation.getCurrentPosition(success, error, config);
 };
 

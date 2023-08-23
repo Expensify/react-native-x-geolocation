@@ -11,13 +11,7 @@ export type GeolocationSuccessCallback = (position: {
     timestamp: number;
 }) => void;
 
-export type GeolocationErrorCallback = (error: {
-    code: number;
-    message: string;
-    PERMISSION_DENIED: number;
-    POSITION_UNAVAILABLE: number;
-    TIMEOUT: number;
-}) => void;
+export type GeolocationErrorCallback = (error: {code: number; message: string; PERMISSION_DENIED: number; POSITION_UNAVAILABLE: number; TIMEOUT: number}) => void;
 
 export type GeolocationOptions = {
     timeout?: number;
@@ -37,8 +31,4 @@ export type GeolocationOptions = {
     fastestInterval?: number;
 };
 
-export type GetCurrentPosition = (
-    success: GeolocationSuccessCallback, 
-    error: GeolocationErrorCallback, 
-    options: GeolocationOptions
-) => void;
+export type GetCurrentPosition = (success: GeolocationSuccessCallback, error: GeolocationErrorCallback, options: GeolocationOptions) => void;

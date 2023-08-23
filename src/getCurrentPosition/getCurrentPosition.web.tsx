@@ -1,4 +1,4 @@
-import { GetCurrentPosition } from "./getCurrentPosition.types";
+import {GetCurrentPosition} from './getCurrentPosition.types';
 
 const getCurrentPosition: GetCurrentPosition = (success, error, options) => {
     if (typeof navigator === 'undefined' || !('geolocation' in navigator)) {
@@ -7,7 +7,7 @@ const getCurrentPosition: GetCurrentPosition = (success, error, options) => {
             message: 'Geolocation is not supported by this environment.',
             PERMISSION_DENIED: -1,
             POSITION_UNAVAILABLE: -1,
-            TIMEOUT: -1
+            TIMEOUT: -1,
         });
         return;
     }
