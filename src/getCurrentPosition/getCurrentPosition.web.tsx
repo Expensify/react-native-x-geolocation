@@ -8,7 +8,7 @@ const getCurrentPosition: GetCurrentPosition = (success, error, options) => {
             PERMISSION_DENIED: GeolocationErrorCode.PERMISSION_DENIED,
             POSITION_UNAVAILABLE: GeolocationErrorCode.POSITION_UNAVAILABLE,
             TIMEOUT: GeolocationErrorCode.TIMEOUT,
-            NOT_SUPPORTED: GeolocationErrorCode.NOT_SUPPORTED
+            NOT_SUPPORTED: GeolocationErrorCode.NOT_SUPPORTED,
         });
         return;
     }

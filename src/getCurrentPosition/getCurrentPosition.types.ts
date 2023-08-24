@@ -12,21 +12,21 @@ export type GeolocationSuccessCallback = (position: {
 }) => void;
 
 export type GeolocationErrorCallback = (error: {
-        code: GeolocationErrorCode; 
-        message: string; 
-        PERMISSION_DENIED: GeolocationErrorCode.PERMISSION_DENIED;
-        POSITION_UNAVAILABLE: GeolocationErrorCode.POSITION_UNAVAILABLE;
-        TIMEOUT: GeolocationErrorCode.TIMEOUT;
+    code: GeolocationErrorCode;
+    message: string;
+    PERMISSION_DENIED: GeolocationErrorCode.PERMISSION_DENIED;
+    POSITION_UNAVAILABLE: GeolocationErrorCode.POSITION_UNAVAILABLE;
+    TIMEOUT: GeolocationErrorCode.TIMEOUT;
 
-        /* Web only */
-        NOT_SUPPORTED?: GeolocationErrorCode.NOT_SUPPORTED;
+    /* Web only */
+    NOT_SUPPORTED?: GeolocationErrorCode.NOT_SUPPORTED;
 }) => void;
 
 export enum GeolocationErrorCode {
     PERMISSION_DENIED = 1,
     POSITION_UNAVAILABLE = 2,
     TIMEOUT = 3,
-    NOT_SUPPORTED = -1
+    NOT_SUPPORTED = -1,
 }
 
 export type GeolocationOptions = {

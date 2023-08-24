@@ -1,11 +1,9 @@
-
-
-/** 
+/**
  * Represents a URL string that provides more information on how to enable geolocation permissions on web.
  */
 export type HelpLink = string;
 
-/** 
+/**
  * Represents a URL string that navigates to the device settings or permissions page.
  */
 export type SettingsLink = string;
