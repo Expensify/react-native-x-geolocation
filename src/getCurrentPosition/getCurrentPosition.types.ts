@@ -11,7 +11,23 @@ export type GeolocationSuccessCallback = (position: {
     timestamp: number;
 }) => void;
 
-export type GeolocationErrorCallback = (error: {code: number; message: string; PERMISSION_DENIED: number; POSITION_UNAVAILABLE: number; TIMEOUT: number}) => void;
+export type GeolocationErrorCallback = (error: {
+    code: (typeof GeolocationErrorCode)[keyof typeof GeolocationErrorCode];
+    message: string;
+    PERMISSION_DENIED: typeof GeolocationErrorCode.PERMISSION_DENIED;
+    POSITION_UNAVAILABLE: typeof GeolocationErrorCode.POSITION_UNAVAILABLE;
+    TIMEOUT: typeof GeolocationErrorCode.TIMEOUT;
+
+    /* Web only */
+    NOT_SUPPORTED?: typeof GeolocationErrorCode.NOT_SUPPORTED;
+}) => void;
+
+export const GeolocationErrorCode = {
+    PERMISSION_DENIED: 1,
+    POSITION_UNAVAILABLE: 2,
+    TIMEOUT: 3,
+    NOT_SUPPORTED: -1,
+};
 
 export type GeolocationOptions = {
     timeout?: number;

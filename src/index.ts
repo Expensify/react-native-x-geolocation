@@ -1,4 +1,4 @@
 import getCurrentPosition from './getCurrentPosition';
+import getPermissionDeniedHelpLink from './getPermissionDeniedHelpLink';
 
-/* eslint-disable import/prefer-default-export */
-export {getCurrentPosition};
+export {getCurrentPosition, getPermissionDeniedHelpLink};
