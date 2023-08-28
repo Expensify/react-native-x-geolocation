@@ -18,7 +18,11 @@ const requestConfig: FetchConfigWithOptions = {
     method: 'POST',
 };
 
-const getCurrentPosition: GetCurrentPosition = (success, error, options) => {
+const getCurrentPosition: GetCurrentPosition = (
+    success,
+    error,
+    options, // we will ignore options.maximumAge and options.enableHighAccuracy since cant pass it to geolocate api directly
+) => {
     // emulate the timeout param with an abort signal
     if (options?.timeout) {
         const abortController = new AbortController();
@@ -43,7 +47,7 @@ const getCurrentPosition: GetCurrentPosition = (success, error, options) => {
                     heading: null,
                     speed: null,
                 },
-                timestamp: Date.now(), // the api call doesn't return timestamp directly, so we return ourselves
+                timestamp: Date.now(), // the api call doesn't return timestamp directly, so we emulate ourselves
             };
 
             success(transformedResponse);
