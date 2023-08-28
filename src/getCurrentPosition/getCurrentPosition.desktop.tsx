@@ -1,4 +1,4 @@
-import {GetCurrentPosition} from './getCurrentPosition.types';
+import {GetCurrentPosition, GeolocationErrorCode} from './getCurrentPosition.types';
 
 type GoogleAPIsGeoLocateResponse = {
     location: {
@@ -33,7 +33,13 @@ const getCurrentPosition: GetCurrentPosition = (
     const tempAPIToken = ''; // we get this token from our backend
 
     fetch(`${BASE_URL}?key=${tempAPIToken}`, requestConfig)
-        .then((response) => response.json())
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+
+            return response.json();
+        })
         .then((response: GoogleAPIsGeoLocateResponse) => {
             // transform response to match with the window.navigator.geolocation.getCurrentPosition response
             const transformedResponse = {
@@ -52,7 +58,19 @@ const getCurrentPosition: GetCurrentPosition = (
 
             success(transformedResponse);
         })
-        .catch(error);
+        .catch(() => {
+            const transformedError = {
+                code: GeolocationErrorCode.POSITION_UNAVAILABLE,
+                // adding a generic message for desktop, position unavailable can mean 'no internet'
+                // or some other position related issues on api call failure (excluding timeout)
+                message: 'position unavailable',
+                PERMISSION_DENIED: GeolocationErrorCode.PERMISSION_DENIED,
+                POSITION_UNAVAILABLE: GeolocationErrorCode.POSITION_UNAVAILABLE,
+                TIMEOUT: GeolocationErrorCode.TIMEOUT,
+                NOT_SUPPORTED: GeolocationErrorCode.NOT_SUPPORTED,
+            };
+            error(transformedError);
+        });
 };
 
 export default getCurrentPosition;
