@@ -73,7 +73,7 @@ const getCurrentPosition: GetCurrentPosition = (
             };
 
             // return timeout error on abort
-            if (apiError.message === 'The user aborted a request.') {
+            if (apiError instanceof Error && apiError.message === 'The user aborted a request.') {
                 error({
                     ...baseErrorObject,
                     code: GeolocationErrorCode.TIMEOUT,
