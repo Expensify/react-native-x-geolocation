@@ -45,6 +45,9 @@ export type GeolocationOptions = {
 
     /** Native only */
     fastestInterval?: number;
+
+    /** Desktop only */
+    apiToken?: string;
 };
 
 export type GetCurrentPosition = (success: GeolocationSuccessCallback, error: GeolocationErrorCallback, options?: GeolocationOptions) => void;

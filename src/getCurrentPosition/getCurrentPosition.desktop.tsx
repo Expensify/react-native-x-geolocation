@@ -35,9 +35,8 @@ const getCurrentPosition: GetCurrentPosition = (
         requestConfig.signal = abortController.signal;
     }
 
-    const tempAPIToken = ''; // we get this token from our backend
-
-    fetch(`${BASE_URL}?key=${tempAPIToken}`, requestConfig)
+    // Gets current location from google geolocation api
+    fetch(`${BASE_URL}?key=${options?.apiToken}`, requestConfig)
         .then((response) => {
             if (!response.ok) {
                 throw new Error(response.statusText);
