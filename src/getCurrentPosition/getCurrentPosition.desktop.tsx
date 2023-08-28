@@ -20,14 +20,6 @@ const requestConfig: FetchConfigWithOptions = {
     method: 'POST',
 };
 
-// the base error object when api call fails
-const baseErrorObject = {
-    PERMISSION_DENIED: GeolocationErrorCode.PERMISSION_DENIED,
-    POSITION_UNAVAILABLE: GeolocationErrorCode.POSITION_UNAVAILABLE,
-    TIMEOUT: GeolocationErrorCode.TIMEOUT,
-    NOT_SUPPORTED: GeolocationErrorCode.NOT_SUPPORTED,
-};
-
 const getCurrentPosition: GetCurrentPosition = (
     success,
     error,
@@ -38,14 +30,6 @@ const getCurrentPosition: GetCurrentPosition = (
         const abortController = new AbortController();
         setTimeout(() => {
             abortController.abort();
-
-            // return timeout error on abort
-            error({
-                ...baseErrorObject,
-                code: GeolocationErrorCode.TIMEOUT,
-                // adding a generic message for desktop, when timeout occurs
-                message: 'timeout',
-            });
         }, options.timeout);
         requestConfig.signal = abortController.signal;
     }
@@ -78,7 +62,27 @@ const getCurrentPosition: GetCurrentPosition = (
 
             success(transformedResponse);
         })
-        .catch(() => {
+        .catch((apiError) => {
+            // the base error object when api call fails
+            const baseErrorObject = {
+                // since we are making a direct api call, we won't get permission denied error code
+                PERMISSION_DENIED: GeolocationErrorCode.PERMISSION_DENIED,
+                POSITION_UNAVAILABLE: GeolocationErrorCode.POSITION_UNAVAILABLE,
+                TIMEOUT: GeolocationErrorCode.TIMEOUT,
+                NOT_SUPPORTED: GeolocationErrorCode.NOT_SUPPORTED,
+            };
+
+            // return timeout error on abort
+            if (apiError.message === 'The user aborted a request.') {
+                error({
+                    ...baseErrorObject,
+                    code: GeolocationErrorCode.TIMEOUT,
+                    // adds a generic message for desktop, when timeout occurs
+                    message: 'timeout',
+                });
+                return;
+            }
+
             error({
                 ...baseErrorObject,
                 code: GeolocationErrorCode.POSITION_UNAVAILABLE,
