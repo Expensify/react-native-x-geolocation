@@ -14,8 +14,18 @@ type FetchConfigWithOptions = {
 };
 
 const BASE_URL = 'https://www.googleapis.com/geolocation/v1/geolocate';
+
+// api request config
 const requestConfig: FetchConfigWithOptions = {
     method: 'POST',
+};
+
+// the base error object when api call fails
+const baseErrorObject = {
+    PERMISSION_DENIED: GeolocationErrorCode.PERMISSION_DENIED,
+    POSITION_UNAVAILABLE: GeolocationErrorCode.POSITION_UNAVAILABLE,
+    TIMEOUT: GeolocationErrorCode.TIMEOUT,
+    NOT_SUPPORTED: GeolocationErrorCode.NOT_SUPPORTED,
 };
 
 const getCurrentPosition: GetCurrentPosition = (
@@ -26,7 +36,17 @@ const getCurrentPosition: GetCurrentPosition = (
     // emulate the timeout param with an abort signal
     if (options?.timeout) {
         const abortController = new AbortController();
-        setTimeout(() => abortController.abort(), options.timeout);
+        setTimeout(() => {
+            abortController.abort();
+
+            // return timeout error on abort
+            error({
+                ...baseErrorObject,
+                code: GeolocationErrorCode.TIMEOUT,
+                // adding a generic message for desktop, when timeout occurs
+                message: 'timeout',
+            });
+        }, options.timeout);
         requestConfig.signal = abortController.signal;
     }
 
@@ -59,17 +79,13 @@ const getCurrentPosition: GetCurrentPosition = (
             success(transformedResponse);
         })
         .catch(() => {
-            const transformedError = {
+            error({
+                ...baseErrorObject,
                 code: GeolocationErrorCode.POSITION_UNAVAILABLE,
                 // adding a generic message for desktop, position unavailable can mean 'no internet'
                 // or some other position related issues on api call failure (excluding timeout)
                 message: 'position unavailable',
-                PERMISSION_DENIED: GeolocationErrorCode.PERMISSION_DENIED,
-                POSITION_UNAVAILABLE: GeolocationErrorCode.POSITION_UNAVAILABLE,
-                TIMEOUT: GeolocationErrorCode.TIMEOUT,
-                NOT_SUPPORTED: GeolocationErrorCode.NOT_SUPPORTED,
-            };
-            error(transformedError);
+            });
         });
 };
 
