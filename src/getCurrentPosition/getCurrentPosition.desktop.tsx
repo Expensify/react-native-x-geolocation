@@ -26,9 +26,10 @@ const getCurrentPosition: GetCurrentPosition = (
     options, // we will ignore options.maximumAge and options.enableHighAccuracy since cant pass it to geolocate api directly
 ) => {
     // emulate the timeout param with an abort signal
+    let timeoutID: NodeJS.Timeout;
     if (options?.timeout) {
         const abortController = new AbortController();
-        setTimeout(() => {
+        timeoutID = setTimeout(() => {
             abortController.abort();
         }, options.timeout);
         requestConfig.signal = abortController.signal;
@@ -90,6 +91,12 @@ const getCurrentPosition: GetCurrentPosition = (
                 // or some other position related issues on api call failure (excluding timeout)
                 message: 'position unavailable',
             });
+        })
+        .finally(() => {
+            // clear any leftover timeouts
+            if (timeoutID) {
+                clearTimeout(timeoutID);
+            }
         });
 };
 
