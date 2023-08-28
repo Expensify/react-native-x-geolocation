@@ -6,14 +6,26 @@ type GoogleAPIsGeoLocateResponse = {
         lng: number;
     };
     accuracy: number;
-}
+};
+
+type FetchConfigWithOptions = {
+    method: string;
+    signal?: AbortSignal;
+};
 
 const BASE_URL = 'https://www.googleapis.com/geolocation/v1/geolocate';
-const requestConfig = {
+const requestConfig: FetchConfigWithOptions = {
     method: 'POST',
 };
 
-const getCurrentPosition: GetCurrentPosition = (success, error) => {
+const getCurrentPosition: GetCurrentPosition = (success, error, options) => {
+    // emulate the timeout param with an abort signal
+    if (options?.timeout) {
+        const abortController = new AbortController();
+        setTimeout(() => abortController.abort(), options.timeout);
+        requestConfig.signal = abortController.signal;
+    }
+
     const tempAPIToken = ''; // we get this token from our backend
 
     fetch(`${BASE_URL}?key=${tempAPIToken}`, requestConfig)
