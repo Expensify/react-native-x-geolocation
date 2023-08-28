@@ -8,15 +8,10 @@ type GoogleAPIsGeoLocateResponse = {
     accuracy: number;
 };
 
-type FetchConfigWithOptions = {
-    method: string;
-    signal?: AbortSignal;
-};
-
 const BASE_URL = 'https://www.googleapis.com/geolocation/v1/geolocate';
 
 // Api request config
-const requestConfig: FetchConfigWithOptions = {
+const requestConfig: RequestInit = {
     method: 'POST',
 };
 
