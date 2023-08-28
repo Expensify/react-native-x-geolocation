@@ -15,7 +15,7 @@ type FetchConfigWithOptions = {
 
 const BASE_URL = 'https://www.googleapis.com/geolocation/v1/geolocate';
 
-// api request config
+// Api request config
 const requestConfig: FetchConfigWithOptions = {
     method: 'POST',
 };
@@ -23,9 +23,9 @@ const requestConfig: FetchConfigWithOptions = {
 const getCurrentPosition: GetCurrentPosition = (
     success,
     error,
-    options, // we will ignore options.maximumAge and options.enableHighAccuracy since cant pass it to geolocate api directly
+    options, // We will ignore options.maximumAge and options.enableHighAccuracy since cant pass it to geolocate api directly
 ) => {
-    // emulate the timeout param with an abort signal
+    // Emulate the timeout param with an abort signal
     let timeoutID: NodeJS.Timeout;
     if (options?.timeout) {
         const abortController = new AbortController();
@@ -45,39 +45,39 @@ const getCurrentPosition: GetCurrentPosition = (
             return response.json();
         })
         .then((response: GoogleAPIsGeoLocateResponse) => {
-            // transform response to match with the window.navigator.geolocation.getCurrentPosition response
+            // Transform response to match with the window.navigator.geolocation.getCurrentPosition response
             const transformedResponse = {
                 coords: {
                     latitude: response.location.lat,
                     longitude: response.location.lng,
                     accuracy: response.accuracy,
-                    // return null for these keys as we don't get them in response when api is directly called
+                    // Return null for these keys as we don't get them in response when api is directly called
                     altitude: null,
                     altitudeAccuracy: null,
                     heading: null,
                     speed: null,
                 },
-                timestamp: Date.now(), // the api call doesn't return timestamp directly, so we emulate ourselves
+                timestamp: Date.now(), // The api call doesn't return timestamp directly, so we emulate ourselves
             };
 
             success(transformedResponse);
         })
         .catch((apiError) => {
-            // the base error object when api call fails
+            // The base error object when api call fails
             const baseErrorObject = {
-                // since we are making a direct api call, we won't get permission denied error code
+                // Since we are making a direct api call, we won't get permission denied error code
                 PERMISSION_DENIED: GeolocationErrorCode.PERMISSION_DENIED,
                 POSITION_UNAVAILABLE: GeolocationErrorCode.POSITION_UNAVAILABLE,
                 TIMEOUT: GeolocationErrorCode.TIMEOUT,
                 NOT_SUPPORTED: GeolocationErrorCode.NOT_SUPPORTED,
             };
 
-            // return timeout error on abort
+            // Return timeout error on abort
             if (apiError instanceof Error && apiError.message === 'The user aborted a request.') {
                 error({
                     ...baseErrorObject,
                     code: GeolocationErrorCode.TIMEOUT,
-                    // adds a generic message for desktop, when timeout occurs
+                    // Adds a generic message for desktop, when timeout occurs
                     message: 'timeout',
                 });
                 return;
@@ -86,13 +86,13 @@ const getCurrentPosition: GetCurrentPosition = (
             error({
                 ...baseErrorObject,
                 code: GeolocationErrorCode.POSITION_UNAVAILABLE,
-                // adding a generic message for desktop, position unavailable can mean 'no internet'
+                // Adding a generic message for desktop, position unavailable can mean 'no internet'
                 // or some other position related issues on api call failure (excluding timeout)
                 message: 'position unavailable',
             });
         })
         .finally(() => {
-            // clear any leftover timeouts
+            // Clear any leftover timeouts
             if (timeoutID) {
                 clearTimeout(timeoutID);
             }
