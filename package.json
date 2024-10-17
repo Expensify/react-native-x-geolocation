@@ -1,6 +1,6 @@
 {
   "name": "react-native-x-geolocation",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "A cross platform compatible map geolocation component for React-Native",
   "main": "./dist/index.js",
   "files": [
